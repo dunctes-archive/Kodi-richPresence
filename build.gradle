@@ -14,9 +14,9 @@ repositories {
 dependencies {
     compile 'com.squareup.okhttp3:okhttp:3.5.0'
     compile group: 'org.json', name: 'json', version: '20171018'
-    compile ('com.github.MinnDevelopment:Java-DiscordRPC:v1.3.2')
-//    {
-//        exclude group: 'com.github.MinnDevelopment', module: 'discord-rpc-release'
-//    }
+    compile ('com.github.MinnDevelopment:Java-DiscordRPC:v1.3.2') {
+        //This takes too long
+        exclude group: 'com.github.MinnDevelopment', module: 'discord-rpc-release'
+    }
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }
