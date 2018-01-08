@@ -10,6 +10,8 @@ import org.json.JSONObject;
 
 public class WebListener extends WebSocketListener {
 
+    public final int NORMAL_CLOSURE_STATUS = 1000;
+
     @Override public void onOpen(WebSocket webSocket, Response response) {
         System.out.println("Connected");
         //webSocket.close(1000, "Goodbye, World!");
@@ -18,7 +20,6 @@ public class WebListener extends WebSocketListener {
     @Override public void onMessage(WebSocket webSocket, String text) {
         //System.out.println("MESSAGE: " + text);
         JSONObject jsonObject = new JSONObject(text);
-        System.out.println(jsonObject.toString(4));
         DiscordRichPresence presence = new DiscordRichPresence();
         presence.details = "Idling";
         presence.largeImageKey = "logo";
@@ -28,8 +29,8 @@ public class WebListener extends WebSocketListener {
         }
         if(jsonObject.optString("method") != null && jsonObject.optString("method").equals("Player.OnPlay")) {
             JSONObject item = jsonObject.optJSONObject("params").optJSONObject("data").optJSONObject("item");
-            presence.details = "Watching " +  item.optString("showtitle");
-            presence.state = item.getString("title");
+            presence.details = "Watching: " +  item.optString("showtitle");
+            presence.state = "Episode: " + item.getString("title");
         }
         Main.getLib().Discord_UpdatePresence(presence);
     }
@@ -39,7 +40,7 @@ public class WebListener extends WebSocketListener {
     }
 
     @Override public void onClosing(WebSocket webSocket, int code, String reason) {
-        webSocket.close(1000, null);
+        webSocket.close(NORMAL_CLOSURE_STATUS, null);
         System.out.println("CLOSE: " + code + " " + reason);
     }
 

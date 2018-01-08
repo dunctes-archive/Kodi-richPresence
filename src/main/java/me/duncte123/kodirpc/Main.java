@@ -43,12 +43,10 @@ public class Main {
         WebSocket ws = client.newWebSocket(request, wl);
 
 
-        Runtime.getRuntime().addShutdownHook(new Thread() {
-            public void run() {
-                ws.close(1000, "Exit");
-                client.dispatcher().executorService().shutdown();
-            }
-        });
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            ws.close(wl.NORMAL_CLOSURE_STATUS, null);
+            client.dispatcher().executorService().shutdown();
+        }, "WebSocket-Close-Thread"));
 
     }
 
