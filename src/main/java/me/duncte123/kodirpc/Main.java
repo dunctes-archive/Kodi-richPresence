@@ -38,6 +38,7 @@ public class Main {
                 .build();
         WebListener wl = new WebListener();
         Request request = new Request.Builder()
+                //You need to enable it in kodi, port can be changed
                 .url("ws://localhost:9090/jsonrpc")
                 .build();
         WebSocket ws = client.newWebSocket(request, wl);
