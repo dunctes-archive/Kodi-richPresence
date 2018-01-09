@@ -10,14 +10,13 @@ import okhttp3.WebSocket;
 import java.util.concurrent.TimeUnit;
 
 public class Main {
-    private static DiscordRPC lib = DiscordRPC.INSTANCE;
+    private static final DiscordRPC lib = DiscordRPC.INSTANCE;
 
     public static void main(String... args) {
         String applicationId = "396990609358979074";
-        String steamId = "";
         DiscordEventHandlers handlers = new DiscordEventHandlers();
-        handlers.ready = () -> System.out.println("Ready!");
-        lib.Discord_Initialize(applicationId, handlers, true, steamId);
+        handlers.ready = () -> System.out.println("Connected to discord.");
+        lib.Discord_Initialize(applicationId, handlers, true, null);
         DiscordRichPresence presence = new DiscordRichPresence();
         //presence.startTimestamp = System.currentTimeMillis() / 1000; // epoch second
         presence.details = "Idling";
@@ -36,16 +35,17 @@ public class Main {
         OkHttpClient client = new OkHttpClient.Builder()
                 .readTimeout(0,  TimeUnit.MILLISECONDS)
                 .build();
-        WebListener wl = new WebListener();
+        WebListener webListener = new WebListener();
         Request request = new Request.Builder()
                 //You need to enable it in kodi, port can be changed
                 .url("ws://localhost:9090/jsonrpc")
                 .build();
-        WebSocket ws = client.newWebSocket(request, wl);
+        WebSocket webSocket = client.newWebSocket(request, webListener);
 
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            ws.close(wl.NORMAL_CLOSURE_STATUS, null);
+            lib.Discord_Shutdown();
+            webSocket.close(webListener.NORMAL_CLOSURE_STATUS, null);
             client.dispatcher().executorService().shutdown();
         }, "WebSocket-Close-Thread"));
 
