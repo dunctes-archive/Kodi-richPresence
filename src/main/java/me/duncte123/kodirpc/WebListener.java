@@ -37,6 +37,10 @@ public class WebListener extends WebSocketListener {
                     presence.details = "No show";
                     presence.state = "";
                     break;
+                case "Playlist.OnAdd":
+                    presence.details = "Adding playlist items.";
+                    presence.state = "Show: " + jsonObject.optJSONObject("params").optJSONObject("data").optJSONObject("item").getString("title");
+                    break;
                 case "System.OnQuit":
                     System.exit(0);
                     break;

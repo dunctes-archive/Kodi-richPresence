@@ -1,8 +1,11 @@
+plugins {
+    id 'java'
+    id 'application'
+    id 'com.github.johnrengelman.shadow' version '2.0.2'
+}
+
 group 'me.duncte123'
 version '1.0-SNAPSHOT'
-
-apply plugin: 'java'
-apply plugin: 'application'
 
 sourceCompatibility = 1.8
 mainClassName = 'me.duncte123.kodirpc.Main'
@@ -19,4 +22,8 @@ dependencies {
         exclude group: 'com.github.MinnDevelopment', module: 'discord-rpc-release'
     }
     testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+shadowJar {
+    classifier = null
 }
