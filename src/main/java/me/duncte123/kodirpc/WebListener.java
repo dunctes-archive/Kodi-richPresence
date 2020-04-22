@@ -31,7 +31,7 @@ public class WebListener extends WebSocketListener {
                     break;
                 case "Player.OnPause":
                     presence.details = "Player paused";
-                    presence.state = "Show: " + jsonObject.optJSONObject("params").optJSONObject("data").optJSONObject("item").getString("showtitle");
+                    presence.state = "Show: " + jsonObject.optJSONObject("params").optJSONObject("data").optJSONObject("item").optString("showtitle");
                     break;
                 case "Player.OnStop":
                     presence.details = "No show";
@@ -39,16 +39,20 @@ public class WebListener extends WebSocketListener {
                     break;
                 case "Playlist.OnAdd":
                     presence.details = "Adding playlist items.";
-                    presence.state = "Show: " + jsonObject.optJSONObject("params").optJSONObject("data").optJSONObject("item").getString("title");
+                    presence.state = "Show: " + jsonObject.optJSONObject("params").optJSONObject("data").optJSONObject("item").optString("title");
                     break;
                 case "System.OnQuit":
                     System.exit(0);
                     break;
                 default:
-                    System.out.println(jsonObject.toString(4));
+                    //System.out.println(jsonObject.toString(4));
                     break;
             }
         }
+
+
+        System.out.println(jsonObject.toString(4));
+
         Main.getLib().Discord_UpdatePresence(presence);
     }
 
